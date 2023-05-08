@@ -1,0 +1,47 @@
+# shellcheck shell=bash disable=SC1091,SC2016,SC2034
+
+function _cautionary_theme_git_info() {
+  [[ ! "$(git_prompt_info)" ]] && return
+
+  echo -n "%{%F{${CAUTIONARY_COLOR_MUTED_FG}}%}(%f"
+  echo -n "$(git_prompt_info)$(git_prompt_status)%f"
+  echo "%{%F{${CAUTIONARY_COLOR_MUTED_FG}}%})%f "
+}
+
+source "${0:A:h:h}/lib/theme.sh"
+
+ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{${CAUTIONARY_COLOR_SUCCESS_FG}}%} \U2714"
+ZSH_THEME_GIT_PROMPT_DIRTY=''
+ZSH_THEME_GIT_PROMPT_PREFIX="%{%F{${CAUTIONARY_COLOR_SECONDARY_FG}}%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX='%f'
+
+ZSH_THEME_GIT_PROMPT_ADDED="%{%F{${CAUTIONARY_COLOR_SUCCESS_FG}}%} +"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{${CAUTIONARY_COLOR_PRIMARY_FG}}%} \U2191"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{%F{${CAUTIONARY_COLOR_RISK_FG}}%} \U2193"
+ZSH_THEME_GIT_PROMPT_DELETED="%{%F{${CAUTIONARY_COLOR_DANGER_FG}}%} \U2717"
+ZSH_THEME_GIT_PROMPT_DIVERGED="%{%F{${CAUTIONARY_COLOR_DANGER_FG}}%} \U26A0"
+ZSH_THEME_GIT_PROMPT_MODIFIED="%{%F{${CAUTIONARY_COLOR_RISK_FG}}%} \U2692"
+ZSH_THEME_GIT_PROMPT_RENAMED="%{%F{${CAUTIONARY_COLOR_DANGER_FG}}%} ~"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{%F{${CAUTIONARY_COLOR_DANGER_FG}}%} ?"
+ZSH_THEME_GIT_PROMPT_UNTRACKED="%{%F{${CAUTIONARY_COLOR_RISK_FG}}%} !"
+
+PROMPT=''
+
+source "${0:A:h:h}/lib/zones.sh"
+
+if cautionary_danger_zone; then
+  PROMPT+='%{%F{${CAUTIONARY_COLOR_DANGER_FG}}%}%n@%m%f '
+  PROMPT+=$'\U1F480 '
+elif cautionary_risk_zone; then
+  PROMPT+='%{%F{${CAUTIONARY_COLOR_RISK_FG}}%}%n@%m%f '
+  PROMPT+=$'\U1F480 '
+else
+  PROMPT+='%{%F{${CAUTIONARY_COLOR_MUTED_FG}}%}%n@%m%f '
+fi
+
+PROMPT+='%{%F{${CAUTIONARY_COLOR_PRIMARY_FG}}%}%0~%f '
+
+PROMPT+='$(_cautionary_theme_git_info)'
+PROMPT+='%B%(?:%{%F{${CAUTIONARY_COLOR_SUCCESS_FG}}%}➜:%{%F{${CAUTIONARY_COLOR_DANGER_FG}}%}➜)%b%f '
+
+unset _cautionary_dir
