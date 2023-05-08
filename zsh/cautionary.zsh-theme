@@ -1,6 +1,6 @@
-# shellcheck disable=SC2016,SC2034
+# shellcheck shell=bash disable=SC1090,SC2016,SC2034
 
-function _prodfiles_cautionary_theme_git_info() {
+function _cautionary_theme_git_info() {
   [[ ! "$(git_prompt_info)" ]] && return
 
   echo -n "%{%F{${COLOR_FG_MUTED}}%}(%f"
@@ -8,9 +8,9 @@ function _prodfiles_cautionary_theme_git_info() {
   echo "%{%F{${COLOR_FG_MUTED}}%})%f "
 }
 
-: "${PRODFILES:="$(readlink -f "$(dirname "$(readlink -f "$0")")/../..")"}"
+_cautionary_dir="${0:A:h:h}"
 
-source "${PRODFILES}/schemes/${PRODFILES_SCHEME:-github_dark}.env"
+source "${_cautionary_dir}/schemes/${CAUTIONARY_SCHEME:-github_dark}.env"
 
 ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{${COLOR_SUCCESS_FG}}%} \U2714"
 ZSH_THEME_GIT_PROMPT_DIRTY=''
@@ -41,5 +41,7 @@ fi
 
 PROMPT+='%{%F{${COLOR_ACCENT_FG}}%}%0~%f '
 
-PROMPT+='$(_prodfiles_cautionary_theme_git_info)'
+PROMPT+='$(_cautionary_theme_git_info)'
 PROMPT+='%B%(?:%{%F{${COLOR_SUCCESS_FG}}%}➜:%{%F{${COLOR_DANGER_FG}}%}➜)%b%f '
+
+unset _cautionary_dir
