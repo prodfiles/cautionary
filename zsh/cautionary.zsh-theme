@@ -1,4 +1,4 @@
-# shellcheck shell=bash disable=SC1090,SC1091,SC2016,SC2034
+# shellcheck shell=bash disable=SC1091,SC2016,SC2034
 
 function _cautionary_theme_git_info() {
   [[ ! "$(git_prompt_info)" ]] && return
@@ -8,9 +8,7 @@ function _cautionary_theme_git_info() {
   echo "%{%F{${COLOR_FG_MUTED}}%})%f "
 }
 
-_cautionary_dir="${0:A:h:h}"
-
-source "${_cautionary_dir}/schemes/${CAUTIONARY_SCHEME:-github_dark}.env"
+source "${0:A:h:h}/lib/theme.sh"
 
 ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{${COLOR_SUCCESS_FG}}%} \U2714"
 ZSH_THEME_GIT_PROMPT_DIRTY=''
@@ -29,7 +27,7 @@ ZSH_THEME_GIT_PROMPT_UNTRACKED="%{%F{${COLOR_ATTENTION_FG}}%} !"
 
 PROMPT=''
 
-source "${_cautionary_dir}/lib/zones.sh"
+source "${0:A:h:h}/lib/zones.sh"
 
 if cautionary_danger_zone; then
   PROMPT+='%{%F{${COLOR_DANGER_FG}}%}%n@%m%f '
